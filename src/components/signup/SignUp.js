@@ -41,15 +41,17 @@ function SignUp() {
     console.log("Succeeded!!!")
   };
 
-  const handleInput = e => {
-    const inputName = e.currentTarget.name;
-    const value = e.currentTarget.value;
-
-    if (value !== '') {
-      setState(prev => ({ ...prev, [inputName]: value }));
-    } else {
-      setState(prev => ({ ...prev, }));
-    }
+  const handleInput = event => {
+    const { currentTarget } = event;
+    const { type, name, value } = currentTarget;
+    setState(prev => ({
+      ...prev,
+      [name]: (
+        type === 'checkbox'
+          ? currentTarget.checked
+          : value
+      )
+    }));
   };
 
   return (
@@ -65,22 +67,22 @@ function SignUp() {
           )}
           <StyledFieldRow>
             <StyledInput
-              type="firstname"
+              type="text"
               name="firstname"
               value={state.firstname}
               onChange={handleInput}
               placeholder='First Name*'
             />
             <StyledInputSecond
-              type="lasttname"
-              name="lasttname"
+              type="text"
+              name="lastname"
               value={state.lastname}
               onChange={handleInput}
               placeholder='Last name*'
             />
           </StyledFieldRow>
           <StyledInput
-            type="email"
+            type="text"
             name="email"
             value={state.email}
             onChange={handleInput}
@@ -88,32 +90,20 @@ function SignUp() {
           />
           <StyledInput
             type="text"
-            name="name"
+            name="password"
             value={state.password}
             onChange={handleInput}
             placeholder='Password*'
           />
           <StyledFieldset>
-            <label>I want to receive inspiration, marketing promotions and updates via email.</label>
             <label>
               <input
-                type="radio"
-                value="checked"
-                name="remember"
-                checked={state.remember === 'checked'}
+                type="checkbox"
+                name="receive"
+                checked={state.receive}
                 onChange={handleInput}
               />
-              Yes
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="unchecked"
-                name="remember"
-                checked={state.remember === 'unchecked'}
-                onChange={handleInput}
-              />
-              No
+              I want to receive inspiration, marketing promotions and updates via email.
             </label>
           </StyledFieldset>
 

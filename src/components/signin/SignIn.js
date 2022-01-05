@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
 import {
   StyledFormWrapper,
   StyledForm,
@@ -16,7 +15,7 @@ import {
 const initalState = {
   email: '',
   password: '',
-  remember: ''
+  remember: false,
 };
 function SignIn() {
   const [state, setState] = useState(initalState);
@@ -38,15 +37,17 @@ function SignIn() {
     console.log("Succeeded!!!")
   };
 
-  const handleInput = e => {
-    const inputName = e.currentTarget.name;
-    const value = e.currentTarget.value;
-
-    if (value !== '') {
-      setState(prev => ({ ...prev, [inputName]: value }));
-    } else {
-      setState(prev => ({ ...prev, }));
-    }
+  const handleInput = event => {
+    const { currentTarget } = event;
+    const { type, name, value } = currentTarget;
+    setState(prev => ({
+      ...prev,
+      [name]: (
+        type === 'checkbox'
+          ? currentTarget.checked
+          : value
+      )
+    }));
   };
 
   return (
@@ -61,41 +62,29 @@ function SignIn() {
             </StyledError>
           )}
           <StyledInput
-            type="email"
+            type="text"
             name="email"
             value={state.email}
             onChange={handleInput}
             placeholder='Email address*'
           />
           <StyledInput
-            type="text"
-            name="name"
+            type="password"
+            name="password"
             value={state.password}
             onChange={handleInput}
             placeholder='Password*'
           />
 
           <StyledFieldset>
-            <label>Remember Me</label>
             <label>
               <input
-                type="radio"
-                value="checked"
+                type="checkbox"
                 name="remember"
-                checked={state.remember === 'checked'}
+                checked={state.remember}
                 onChange={handleInput}
               />
-              Yes
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="unchecked"
-                name="remember"
-                checked={state.remember === 'unchecked'}
-                onChange={handleInput}
-              />
-              No
+              Remember Me
             </label>
           </StyledFieldset>
 
